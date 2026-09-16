@@ -1,0 +1,89 @@
+:root{
+    --main-color:#f63230 ;
+    --first-color: #f63230;
+    --second-color: #0e7ad7;
+    --third-color: #ec9720;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+    font-family: "Nunito", sans-serif;
+}
+
+.mainColor{
+    color: var(--main-color);
+}
+.mainButton{
+    border: 1px solid var(--main-color);
+    border-radius: 5px;
+    letter-spacing: 1px;
+    background-color: transparent;
+    transition-duration: .5s;
+}
+.mainButton:hover{
+    background-color: var(--main-color);
+    color: #fff;
+}
+.title img{
+    width: 20%;
+}
+.title h2{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
+}
+.loadingPage{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 150;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 1s;
+} 
+.loadingPage.hide{
+opacity: 0;
+}
+.mainBorder{
+    border: 1px solid var(--main-color);
+}
+
+.price{
+    column-gap: 10px;
+}
+
+.price span.bold{
+    font-weight: 500;
+}
+
+.sizes,
+.colors{
+    column-gap: 10px;
+}
+
+.sizes ul,
+.colors ul{
+    column-gap: 10px;
+}
+
+.sizes ul li{ 
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    color: gray;
+}
+
+.sizes ul li.active{
+    background-color: var(--main-color);
+    color: #fff;
+}
