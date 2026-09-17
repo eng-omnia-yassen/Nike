@@ -114,12 +114,14 @@
     transform: translateX(-80px);
     transition-duration: 1s;
     transition-delay: 1.7s;
+    padding-top:0px ;
 }
 
 .s-carousel .inner-carousel .inner-carousel-item.active .part1 .item {
     width: 80%;
     opacity: 1;
     transform: translateX(0px);
+    
 }
 
 .s-carousel .inner-carousel .inner-carousel-item .part1 .item h1{

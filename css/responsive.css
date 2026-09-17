@@ -45,13 +45,15 @@
     }
 
     .navbar .navbar-collapse .nav-link{
-        /* text-align: center; */
         width: fit-content;
+    }
+
+    .s-carousel .inner-carousel .inner-carousel-item .part1 .item {
+        padding-top:60px ;
     }
 
     .s-carousel .inner-carousel .inner-carousel-item.active .part1 .item {
         width: 95%;
-        padding-top:60px ;
     }
 
     .s-carousel .inner-carousel .inner-carousel-item .part1 .item h1{
@@ -123,7 +125,7 @@
 }
 
 @media (min-width: 371px) and (max-width: 1300px) {
-    .s-carousel .inner-carousel .inner-carousel-item.active .part1 .item {
+    .s-carousel .inner-carousel .inner-carousel-item .part1 .item {
         padding-top: 90px;
     }
 
@@ -139,7 +141,7 @@
 
 @media (min-width: 577px) and (max-width: 1300px) {
     
-    .s-carousel .inner-carousel .inner-carousel-item.active .part1 .item {
+    .s-carousel .inner-carousel .inner-carousel-item .part1 .item {
         padding-top: 100px;
     }
 
@@ -166,10 +168,12 @@
     .navbar .navbar-brand{
         width: 12%;
     }
+    .s-carousel .inner-carousel .inner-carousel-item .part1 .item {
+        padding-top: 0;
+    }
 
     .s-carousel .inner-carousel .inner-carousel-item.active .part1 .item {
         width: 85%;
-        padding-top: 0;
     }
 
     .s-carousel .inner-carousel .inner-carousel-item .part1 .item h1{
