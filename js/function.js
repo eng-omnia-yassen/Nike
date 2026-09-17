@@ -216,7 +216,7 @@ function toggleOrderBtn(status,that){
     that.textContent='Remove From Cart'
   }
   else if(status=='add'){
-    that.classList.remove("remove")
+    that?.classList.remove("remove")
     that.textContent='Add To Cart'
   }
 }
@@ -298,12 +298,7 @@ function showCart(){
 function removeFromShop(productId){
   let productEle=document.querySelector(`.popup[data-popup-name='shop'] .box .row .product[data-product-id="${productId}"]`).parentElement.parentElement,
   latestProduct=document.querySelector(`#Latest .content .product[data-product-id="${productId}"]`),
-  latestProductBtn=latestProduct.querySelector("button");
-  console.log(latestProductBtn)
+  latestProductBtn=latestProduct?.querySelector("button");
   productEle.remove();
   removeFromCart(productId,latestProductBtn)
 }
-
- function showAlart(){
-
- }
