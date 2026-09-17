@@ -304,7 +304,7 @@
     left: 50%;
     transform: translate(-50%,30px);
     opacity: 0;
-    transition-duration: .5s;
+    transition-duration: 1s;
 }
 
 #Featured .content  .item:hover .head i {
@@ -338,8 +338,7 @@
     cursor: pointer;
 }
 
-#Featured .content  .item .head ul li.active,
-#Featured .content  .item .head ul li:hover {
+#Featured .content  .item .head ul li.active{
  
     background-color: var(--main-color);
 }

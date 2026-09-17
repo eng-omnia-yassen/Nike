@@ -12,7 +12,9 @@ h5,
 h6{
     font-family: "Nunito", sans-serif;
 }
-
+ li,i{
+    cursor: pointer;
+ }
 .mainColor{
     color: var(--main-color);
 }

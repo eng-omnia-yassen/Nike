@@ -204,11 +204,9 @@ function removeFromCart(productId,that){
     return product.id != productId;
   })
   updateLocalStorage();
-  if(that!=null){
-    that.setAttribute('onclick',`addToCart(${productId},this)`);
-    toggleOrderBtn('add',that)
-
-  }
+  toggleOrderBtn('add',that)
+  that.setAttribute('onclick',`addToCart(${productId},this)`);
+  
 }
 
 
@@ -259,7 +257,7 @@ function showCart(){
   if(cartProducts.length == 0){
     contentEle.innerHTML=`
         <p class="text-center alert alert-warning">There are no products</p>
-    `
+      `
     buyNowBtn.classList.add("d-none");
   }else{
     contentEle.innerHTML='';
@@ -299,10 +297,13 @@ function showCart(){
 }
 function removeFromShop(productId){
   let productEle=document.querySelector(`.popup[data-popup-name='shop'] .box .row .product[data-product-id="${productId}"]`).parentElement.parentElement,
-  latestProductBtn=document.querySelector(`#Latest .content .product[data-product-id="${productId} button"]`)
-  productEle.remove();
+  latestProduct=document.querySelector(`#Latest .content .product[data-product-id="${productId}"]`),
+  latestProductBtn=latestProduct.querySelector("button");
   console.log(latestProductBtn)
+  productEle.remove();
   removeFromCart(productId,latestProductBtn)
 }
 
- 
+ function showAlart(){
+
+ }
