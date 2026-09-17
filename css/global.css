@@ -27,6 +27,15 @@ h6{
     background-color: var(--main-color);
     color: #fff;
 }
+.mainButton.remove{
+    border: 1px solid var(--bs-warning);
+    color: var(--bs-warning);    
+}
+.mainButton.remove:hover{
+    background-color: var(--bs-warning);
+    color: #fff;
+}
+
 .title img{
     width: 20%;
 }

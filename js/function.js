@@ -59,22 +59,36 @@ function countTheDiscount(price,discount){
   
 }
 
-function sizes(sizes){
-  let liOfSizes="";
+function sizes(sizes,isProductInToCart=null){
+  let  liOfSizes="";
   sizes.forEach(function(size,indexed){
-    liOfSizes+=`
-      <li class="mainColor mainButton d-flex justify-content-center align-items-center ${(indexed==0)? "active":""}" onclick="updataActive(this); updateSize('${size}',this)">${size}</li>
-    `
+    if(isProductInToCart == null){
+      liOfSizes+=
+      `
+        <li class="mainColor mainButton d-flex justify-content-center align-items-center ${(indexed == 0)? "active":""}" onclick="updataActive(this); updateSize('${size}',this)">${size}</li>
+      `
+    } else{
+      liOfSizes+=
+      `
+        <li class="mainColor mainButton d-flex justify-content-center align-items-center ${(isProductInToCart.size == size)? "active":""}" onclick="updataActive(this); updateSize('${size}',this)">${size}</li>
+      `
+    }
   });
   return liOfSizes;
 }
 
-function colors(colors){
+function colors(colors,isProductInToCart=null){
   let liOfColors="";
   colors.forEach(function(color,indexed){
-    liOfColors+=`
-        <li class="rounded-circle mainColor mainButton d-flex justify-content-center align-items-center ${(indexed==0)? 'active':''}" onclick="updataActive(this);updateColor('${color}',this)" style="background-color: ${color}"></li>
-      `
+    if(isProductInToCart == null){
+      liOfColors+=`
+          <li class="rounded-circle mainColor mainButton d-flex justify-content-center align-items-center ${(indexed==0)? 'active':''}" onclick="updataActive(this);updateColor('${color}',this)" style="background-color: ${color}"></li>
+        `
+    }else{
+        liOfColors+=`
+          <li class="rounded-circle mainColor mainButton d-flex justify-content-center align-items-center ${(isProductInToCart.color ==color)? "active":""}" onclick="updataActive(this);updateColor('${color}',this)" style="background-color: ${color}"></li>
+        `
+    }
   });
   return liOfColors;
 }
@@ -122,14 +136,16 @@ function getProduct(productId){
 }
 
 function showProduct(productId){
+  
   let product=getProduct(productId),
+      isProductInToCart=checkLocalStorage(product.id),  
      popupProduct=document.querySelector(`.popup[data-popup-name='product'] .box`);
      openPopup('product')
      popupProduct.innerHTML=`
         <div 
         class="row product"
-        data-set-size="${product.sizes[0]}"
-        data-set-colors="${product.colors[0]}"
+        data-set-size="${isProductInToCart?.sizes ?? product.sizes[0]}"
+        data-set-colors="${isProductInToCart?.colors ?? product.colors[0]}"
         >
             <div class="col-lg-6 col-md-6">
                 <div class="item">
@@ -149,20 +165,20 @@ function showProduct(productId){
                             ${countTheDiscount(product.price,product.discount)}
                         </div>
                         <hr>
-                        <p >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur, aspernatur. Eveniet, fugiat recusandae voluptatum odio placeat aperiam impedit architecto quod modi, possimus qui doloremque, vel aut! Eius totam sed numquam.</p>
+                        <p >${product.description}</p>
                         <div class="sizes d-flex ">
                             <p class="fw-bolder m-0">Size :</p>
                             <ul class="list-unstyled d-flex m-0">
-                                ${sizes(product.sizes)}
+                                ${sizes(product.sizes , isProductInToCart)}
                             </ul>
                         </div>
                         <div class="colors d-flex ">
                             <p class="fw-bolder m-0">Color :</p>
                             <ul class="list-unstyled d-flex justify-content-center align-items-center m-0">
-                                ${colors(product.colors)}
+                                ${colors(product.colors , isProductInToCart)}
                             </ul>
                         </div>
-                        <button class="btn mainButton mainColor" onclick="addToCart(${product.id},this)">Add To Cart</button>
+                          ${creationOfButton(product.id)}
                     </div>
                     </div>
             </div>
@@ -174,28 +190,119 @@ function addToCart(productId,that){
   let productEle=that.closest('.product'),
   newOrder={
     id:productId,
-    size:productEle.dataset.selectedSize,
-    color:productEle.dataset.selectedColor,
+    size:productEle.dataset.setSize,
+    color:productEle.dataset.setColors,
   }
+  
   cartProducts.push(newOrder);
-  console.log(cartProducts)
+  updateLocalStorage();
+  that.setAttribute('onclick',`removeFromCart(${productId},this)`);
+  toggleOrderBtn("remove",that)
+}
+function removeFromCart(productId,that){
+  cartProducts=cartProducts.filter(function (product){
+    return product.id != productId;
+  })
+  updateLocalStorage();
+  if(that!=null){
+    that.setAttribute('onclick',`addToCart(${productId},this)`);
+    toggleOrderBtn('add',that)
+
+  }
 }
 
+
 function toggleOrderBtn(status,that){
-  if (status=='add'){
-
+  if (status=='remove'){
+    that.classList.add("remove")
+    that.textContent='Remove From Cart'
   }
-  else if(status=='remove'){
-
+  else if(status=='add'){
+    that.classList.remove("remove")
+    that.textContent='Add To Cart'
   }
+}
+
+function updateLocalStorage(){
+  localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
+}
+
+function checkLocalStorage(productId){
+  let result = cartProducts.filter(function(product){
+    return product.id == productId;
+  })
+  return result.length==1 ? result[0] : null;
 }
 
 function updateSize(size,that){
   let productEle=that.closest(".product");
-  productEle.dataset.SelectedSize=size;
+  productEle.dataset.setSize=size;
 }
 
 function updateColor(color,that){
   let productEle=that.closest(".product");
-  productEle.dataset.SelectedColor=color;
+  productEle.dataset.setColors=color;
 }
+function creationOfButton(productid){
+ let isProductInToCart=checkLocalStorage(productid),
+ result= (isProductInToCart == null) ?
+    `<button class="btn mainButton mainColor" onclick="addToCart(${productid},this)">Add To Cart</button>`
+    :
+    `<button class="btn mainButton mainColor remove" onclick="removeFromCart(${productid},this)">Remove From Cart</button>` ;
+  return result                   
+}
+
+function showCart(){
+  let contentEle=document.querySelector(".popup[data-popup-name='shop'] .box .row"),
+      buyNowBtn=document.querySelector(".buyNow");
+
+  if(cartProducts.length == 0){
+    contentEle.innerHTML=`
+        <p class="text-center alert alert-warning">There are no products</p>
+    `
+    buyNowBtn.classList.add("d-none");
+  }else{
+    contentEle.innerHTML='';
+  cartProducts.forEach(function(cartProduct){
+    let product=getProduct(cartProduct.id);
+      contentEle.innerHTML += `
+         <div class="col-md-4 col-sm-6">
+            <div class="item">
+                <div class="product bg-light p-3 rounded-3" data-product-id="${product.id}">
+                    <img src="images/products/${product.images[0]}" alt="1-1.png" class="img-fluid">
+                    <h6>${product.name.slice(0,10)}...</h6>
+                    <div class="price d-flex column-gap-3">
+                        <p class="fw-bolder m-0">Price :</p>
+                        ${countTheDiscount(product.price,product.discount)}
+                    </div>
+                    <div class="sizes d-flex ">
+                        <p class="fw-bolder m-0">Size :</p>
+                        <ul class="list-unstyled d-flex m-0">
+                            ${sizes([cartProduct.size])}
+                        </ul>
+                    </div>
+                    <div class="colors d-flex ">
+                        <p class="fw-bolder m-0">Color :</p>
+                        <ul class="list-unstyled d-flex justify-content-center align-items-center m-0">
+                            ${colors([cartProduct.color])}
+                        </ul>
+                    </div>
+                    <button class="btn btn-danger w-100" onclick="removeFromShop(${product.id})">Remove</button>
+                </div>
+            </div>
+          </div>
+      `;
+    buyNowBtn.classList.remove("d-none");
+    })
+  }
+  openPopup(`shop`);
+}
+function removeFromShop(productId){
+  let productEle=document.querySelector(`.popup[data-popup-name='shop'] .box .row .product[data-product-id="${productId}"]`).parentElement.parentElement,
+  latestProductBtn=document.querySelector(`#Latest .content .product[data-product-id="${productId} button"]`)
+  productEle.remove();
+  console.log(latestProductBtn)
+  removeFromCart(productId,latestProductBtn)
+}
+
+ 

@@ -39,7 +39,7 @@
                             <i class="fa-solid fa-heart"></i>
                         </li>
                         <li>
-                            <i class="fa-solid fa-cart-shopping" onclick="openPopup(`shop`)" ></i>
+                            <i class="fa-solid fa-cart-shopping" onclick="showCart()" ></i>
                         </li>
                         <li>
                             <i class="fa-solid fa-user" id="Login" onclick="openPopup(`Login`)"></i>
@@ -143,6 +143,7 @@
                 <h2 class="position-absolute  w-100">LATEST PRODUCTS</h2>
             </div>
             <div class="content">
+                
             </div>
         </div>
     </section>
@@ -181,15 +182,18 @@
         </div>
     </div>
     <div class="popup " data-popup-name="shop" onclick="closePopup()">
-        <div class="box px-3 py-4">
+        <div class="box p-3">
             <div class="head mainColor mb-5">
             <i class="fa-regular fa-circle-xmark" onclick="closePopup()"></i>
             <h4 class="text-center fw-bolder">Shop</h4>
+            </div>
+            <div class="body">
+                <div class="row mb-3">
+                </div>
+                <button class="btn border rounded-3 border-success w-100 buyNow">Buy Now</button>
+            </div>
+            </div>
         </div>
-        <div class="body">
-        </div>
-        </div>
-    </div>
     <div class="popup " data-popup-name="product" onclick="closePopup()">
             <div class="box py-4 px-4">
             </div>

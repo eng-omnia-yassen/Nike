@@ -13,7 +13,11 @@ featuredContent=document.querySelector("#Featured .content .row"),
 clickedPopup=document.querySelectorAll(".popup"),
 popupBox=document.querySelectorAll(".popup .box"),
 cartProducts=[];
-
+if (localStorage.getItem('cartProducts') == null){
+    updateLocalStorage()
+}else{
+    cartProducts=JSON.parse(localStorage.getItem('cartProducts'))
+}
 checkScrolledNav();
 
 nextButton.addEventListener("click", function(){
@@ -74,51 +78,51 @@ window.addEventListener("DOMContentLoaded",function(){
 })
 
 latest.forEach(function(product){
+    let isProductInToCart=checkLocalStorage(product.id)
     latestContent.innerHTML+= `
-        <div class="row m-auto mb-3 box bg-body mainBorder p-3">
-            <div class="col-lg-6 m-auto">
-                <div 
-                class="product"
-                data-set-size="${product.sizes[0]}"
-                data-set-colors="${product.colors[0]}"
-                >
-                <div class="item ">
-                        <div class="row">
-                            <div class="col-lg-2 col-md-2 part1 m-auto mb-lg-0 mb-md-3">
-                                <div class="item">
-                                    <ul class="list-unstyled m-0 d-flex flex-lg-column flex-md-column">
-                                        ${createLatestLi(product.images)}
-                                    </ul>
+       <div class="product" data-set-size="${product.sizes[0]}" data-set-colors="${product.colors[0]}" data-product-id="${product.id}">
+            <div class="row m-auto mb-3 box bg-body mainBorder p-3">
+                <div class="col-lg-6 m-auto">
+                    <div class="item ">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 part1 m-auto mb-lg-0 mb-md-3">
+                                    <div class="item">
+                                        <ul class="list-unstyled m-0 d-flex flex-lg-column flex-md-column">
+                                            ${createLatestLi(product.images)}
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-10 col-md-10 d-flex justify-content-center align-items-center part2">
-                                <div class="item">
-                                    <div class="selectedImg">
-                                        <img src="images/products/${product.images[0]}" alt="products/${product.images[0]}" class="img-fluid" >
+                                <div class="col-lg-10 col-md-10 d-flex justify-content-center align-items-center part2">
+                                    <div class="item">
+                                        <div class="selectedImg">
+                                            <img src="images/products/${product.images[0]}" alt="products/${product.images[0]}" class="img-fluid" >
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-6 d-flex align-content-start mb-md-3">
-                <div class="product">
-                <div class="item text">
-                        <h3 class="mainColor">${product.name}</h3>
-                        <p class="text-secondary">${product.description}</p>
-                        <div class="price d-flex column-gap-3">
-                            <p class="fw-bolder m-0">Price :</p>
-                            ${countTheDiscount(product.price,product.discount)}
-                        </div>
-                        <div class="sizes d-flex ">
-                            <p class="fw-bolder m-0">Size :</p>
-                            <ul class="list-unstyled d-flex m-0">
-                                ${sizes(product.sizes)}    
-                            </ul>
-                        </div>
-                        <button class="btn mainButton mainColor" onclick="addToCart(${product.id},this)">Add To Cart</button>
-                    </div>
+                <div class="col-lg-6 d-flex align-content-start mb-md-3">
+                    <div class="item text">
+                            <h3 class="mainColor">${product.name}</h3>
+                            <p class="text-secondary">${product.description}</p>
+                            <div class="price d-flex column-gap-3">
+                                <p class="fw-bolder m-0">Price :</p>
+                                ${countTheDiscount(product.price,product.discount)}
+                            </div>
+                            <div class="sizes d-flex ">
+                                <p class="fw-bolder m-0">Size :</p>
+                                <ul class="list-unstyled d-flex m-0">
+                                    ${sizes(product.sizes , isProductInToCart)}    
+                                </ul>
+                            </div>
+                            ${
+                                (isProductInToCart == null) ?
+                                    `<button class="btn mainButton mainColor" onclick="addToCart(${product.id},this)">Add To Cart</button>`
+                                    :
+                                    `<button class="btn mainButton mainColor remove" onclick="removeFromCart(${product.id},this)">Remove From Cart</button>` 
+                            }
+                            </div>
                 </div>
             </div>
         </div>
@@ -149,6 +153,7 @@ features.forEach(function(product){
         </div>
     `;
 })
+
 popupBox.forEach(function(box){
     box.addEventListener("click",function(e){
         e.stopPropagation();
