@@ -31,14 +31,20 @@ function checkScrolledNav(){
 }
 
 function updateNavLink(section){
-    let topOfSection=section.offsetTop;
+    let topOfSection=section.offsetTop-navEle.clientHeight;
     heightOfSection=topOfSection+section.clientHeight;
+    let currentNavLink=navEle.querySelector(".nav-link.active");
       if(window.scrollY>topOfSection&& window.scrollY< heightOfSection){
-        let currentNavLink=navEle.querySelector(".nav-link.active"),
-        sectionId=section.getAttribute("id"),
+       let sectionId=section.getAttribute("id"),
         navLinkOfSection=document.querySelector(`a[href='#${sectionId}']`);
         currentNavLink.classList.remove("active");
         navLinkOfSection.classList.add("active");
+      }
+      else if(window.scrollY>=heightOfSection+navEle.clientHeight){
+        navLinkOfSection=document.querySelector('a[href="#Home"]');
+          currentNavLink.classList.remove("active");
+          navLinkOfSection.classList.add("active");
+
         }
 }
 function createLatestLi(images,isProduct=false){

@@ -50,7 +50,6 @@ prevButton.addEventListener("click", function(){
 
 window.addEventListener("scroll",function(){
   checkScrolledNav();
-  let section=document.querySelector("#Latest");
   
     sections.forEach(function(section){
         updateNavLink(section);       
@@ -66,7 +65,7 @@ navLinkEle.forEach(function(navLinkEle){
         topOfSection=currentSection.offsetTop;
         currentNavLink.classList.remove("active");
         navLinkEle.classList.add("active");
-        window.scrollTo(0,topOfSection-(navEle.clientHeight))  
+        window.scrollTo(0,topOfSection-(navEle.clientHeight)+1)  
     })
 })
 
